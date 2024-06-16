@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: srm
+  namespace: argocd
+spec:
+  destination:
+    namespace: srm
+    server: https://kubernetes.default.svc
+  project: sample-project
+  source:
+    path: chart/
+    repoURL: https://github.com/synopsys-sig/srm-k8s.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true
