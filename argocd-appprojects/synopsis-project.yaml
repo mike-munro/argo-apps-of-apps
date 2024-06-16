@@ -1,8 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: synopsis-project
-  namespace: srm
+  name: synopsis
+  namespace: argocd
 spec:
   clusterResourceWhitelist:
   - group: '*'
