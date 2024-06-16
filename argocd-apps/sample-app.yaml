@@ -10,7 +10,7 @@ spec:
   project: sample-project
   source:
     path: sample-app/
-    repoURL: https://github.com/gokul0815/argocd.git
+    repoURL: https://github.com/mike-munro/argo-apps-of-apps.git
     targetRevision: HEAD
   syncPolicy:
     syncOptions:

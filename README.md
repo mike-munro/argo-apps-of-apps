@@ -17,7 +17,7 @@ This project aims to install a self-managed Argo CD using the App of App pattern
 # Clone Repository
 Clone gokul0815/argocd repository to your local device.
 ```
-git clone https://github.com/gokul0815/argocd.git
+git clone https://github.com/mike-munro/argo-apps-of-apps.git
 ```
 # Create Local Kubernetes Cluster
 Intall kind.
@@ -64,7 +64,7 @@ server:
   config:
     repositories: |
       - type: git
-        url: https://github.com/gokul0815/argocd.git
+        url: https://github.com/mike-munro/argo-apps-of-apps.git
       - name: argo-helm
         type: helm
         url: https://argoproj.github.io/argo-helm
@@ -82,7 +82,7 @@ server:
           - values.yaml
           - ../values-override.yaml
         path: argocd-install/argo-cd
-        repoURL: https://github.com/gokul0815/argocd.git
+        repoURL: https://github.com/mike-munro/argo-apps-of-apps.git
         targetRevision: HEAD
       syncPolicy:
         syncOptions:
@@ -95,7 +95,7 @@ server:
       project: argocd
       source:
         path: argocd-apps
-        repoURL: https://github.com/gokul0815/argocd.git
+        repoURL: https://github.com/mike-munro/argo-apps-of-apps.git
         targetRevision: HEAD
         directory:
           recurse: true
@@ -112,7 +112,7 @@ server:
       project: argocd
       source:
         path: argocd-appprojects
-        repoURL: https://github.com/gokul0815/argocd.git
+        repoURL: https://github.com/mike-munro/argo-apps-of-apps.git
         targetRevision: HEAD
         directory:
           recurse: true
@@ -224,7 +224,7 @@ spec:
   project: sample-project
   source:
     path: sample-app/
-    repoURL: https://github.com/gokul0815/argocd.git
+    repoURL: https://github.com/mike-munro/argo-apps-of-apps.git
     targetRevision: HEAD
   syncPolicy:
     syncOptions:
