@@ -2,29 +2,30 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: ingress-ngnix
-  namespace: argocd
+  namespace: argocd  # Namespace where Argo CD itself is deployed
 spec:
   destination:
-    namespace: default
-    server: https://kubernetes.default.svc
-  project: default
+    namespace: default  # Target namespace where the application will be deployed
+    server: https://kubernetes.default.svc  # Kubernetes API server URL
+  project: default  # Argo CD project to which this application belongs
   sources:
     - repoURL: https://github.com/nginxinc/kubernetes-ingress.git
-      path: charts/nginx-ingress
-      targetRevision: HEAD
+      path: charts/nginx-ingress  # Path within the Git repository where the application manifests are located
+      targetRevision: HEAD  # Git revision (commit hash, branch name, or tag) to deploy
       helm:
-        releaseName: sample-release
+        releaseName: sample-release  # Name of the Helm release
         valueFiles:
-          - $valuesRepo/values/nginx.yaml
+          - $valuesRepo/values/nginx.yaml  # Path to Helm values file in another repository defined by 'valuesRepo'
+
     - repoURL: 'https://github.com/mike-munro/argo-apps-of-apps.git'
-      ref: valuesRepo
-      path: values
-      targetRevision: main
+      ref: valuesRepo  # Reference to a variable named 'valuesRepo' which likely holds the branch, commit, or tag name
+      path: values  # Path within the Git repository where additional configuration or values are located
+      targetRevision: main  # Git revision to deploy from this repository
+
   syncPolicy:
     syncOptions:
-    - CreateNamespace=true
+    - CreateNamespace=true  # Option to create the target namespace if it doesn't exist during synchronization
     automated:
-      selfHeal: true
-      prune: true
+      selfHeal: true  # Enable self-healing to reconcile the application state
+      prune: true  # Enable pruning to delete resources that are no longer specified in Git
 
-#
