@@ -1,15 +1,17 @@
 apiVersion: v1
-{{- if .Values.configs.tlsCerts }}
-{{- toYaml .Values.configs.tlsCerts | nindent 0 }}
-{{- end }}
 kind: ConfigMap
 metadata:
-  labels:
-    {{- include "argo-cd.labels" (dict "context" . "component" .Values.server.name "name" "tls-certs-cm") | nindent 4 }}
-  {{- if .Values.configs.tlsCertsAnnotations }}
-  annotations:
-  {{- range $key, $value := .Values.configs.tlsCertsAnnotations }}
-    {{ $key }}: {{ $value | quote }}
-  {{- end }}
-  {{- end }}
   name: argocd-tls-certs-cm
+  namespace: {{ include  "argo-cd.namespace" . }}
+  labels:
+    {{- include "argo-cd.labels" (dict "context" . "name" "tls-certs-cm") | nindent 4 }}
+  {{- with .Values.configs.tls.annotations }}
+  annotations:
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+{{- with .Values.configs.tls.certificates }}
+data:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
