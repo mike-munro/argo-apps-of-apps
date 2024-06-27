@@ -1,11 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ingress-ngnix
+  name: app-prometheus
   namespace: argocd  # Namespace where Argo CD itself is deployed
 
 spec:
-  sources:
+  source:
   - repoURL: 'https://prometheus-community.github.io/helm-charts'
     chart: prometheus
     targetRevision: 15.7.1
@@ -17,7 +17,7 @@ spec:
     ref: values
 
   destination:
-    namespace: default  # Target namespace where the application will be deployed
+    namespace: monitoring  # Target namespace where the application will be deployed
     server: https://kubernetes.default.svc  # Kubernetes API server URL
   project: default  # Argo CD project to which this application belongs
   
