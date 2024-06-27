@@ -13,7 +13,7 @@ spec:
       valueFiles:
       - $values/values/nginx.yaml
   - repoURL: 'https://github.com/mike-munro/argo-apps-of-apps.git'
-    targetRevision: dev
+    targetRevision: main
     ref: values
 
   destination:
