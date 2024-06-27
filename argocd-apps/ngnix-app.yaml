@@ -3,25 +3,23 @@ kind: Application
 metadata:
   name: ingress-ngnix
   namespace: argocd  # Namespace where Argo CD itself is deployed
+
 spec:
+  sources:
+  - repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: prometheus
+    targetRevision: 15.7.1
+    helm:
+      valueFiles:
+      - $values/values/nginx.yaml
+  - repoURL: 'https://github.com/mike-munro/argo-apps-of-apps.git'
+    targetRevision: dev
+    ref: values
+
   destination:
     namespace: default  # Target namespace where the application will be deployed
     server: https://kubernetes.default.svc  # Kubernetes API server URL
   project: default  # Argo CD project to which this application belongs
-
-  sources:
-    - repoURL: https://github.com/mike-munro/argo-apps-of-apps.git
-      targetRevision: main
-      ref: valuesRepo
-      helm:
-        releaseName: nginx-ingress
-    - repoURL: https://github.com/nginxinc/kubernetes-ingress.git 
-      path: charts/nginx-ingress
-      targetRevision: main
-      helm:
-        releaseName: nginx-ingress
-        valueFiles:
-          - $valuesRepo/values/nginx.yaml
   
   syncPolicy:
     syncOptions:
