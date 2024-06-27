@@ -5,26 +5,14 @@ metadata:
   namespace: argocd  # Namespace where Argo CD itself is deployed
 
 spec:
-  sources:
-    - repoURL: 'https://prometheus-community.github.io/helm-charts'
-      chart: prometheus
-      targetRevision: 15.7.1
-      helm:
-        valueFiles:
-        - $values/values/nginx.yaml
-    - repoURL: 'https://github.com/mike-munro/argo-apps-of-apps.git'
-      targetRevision: main
-      ref: values
-
+  project: default
   destination:
-    namespace: monitoring  # Target namespace where the application will be deployed
-    server: https://kubernetes.default.svc  # Kubernetes API server URL
-  project: default  # Argo CD project to which this application belongs
-  
-  syncPolicy:
-    syncOptions:
-    - CreateNamespace=true  # Option to create the target namespace if it doesn't exist during synchronization
-    automated:
-      selfHeal: true  # Enable self-healing to reconcile the application state
-      prune: true  # Enable pruning to delete resources that are no longer specified in Git
-
+    server: https://kubernetes.default.svc
+    namespace: default
+  sources:
+    - chart: elasticsearch
+      repoURL: https://helm.elastic.co
+      targetRevision: 8.5.1
+    - repoURL: https://github.com/mike-munro/argo-apps-of-apps.git
+      path: charts
+      targetRevision: main
