@@ -11,7 +11,7 @@ spec:
   source:
     path: chart/
     repoURL: https://github.com/synopsys-sig/srm-k8s.git
-    targetRevision: HEAD
+    targetRevision: main
   syncPolicy:
     syncOptions:
     - CreateNamespace=true
