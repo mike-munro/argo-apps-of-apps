@@ -5,16 +5,16 @@ metadata:
   namespace: argocd  # Namespace where Argo CD itself is deployed
 
 spec:
-  source:
-  - repoURL: 'https://prometheus-community.github.io/helm-charts'
-    chart: prometheus
-    targetRevision: 15.7.1
-    helm:
-      valueFiles:
-      - $values/values/nginx.yaml
-  - repoURL: 'https://github.com/mike-munro/argo-apps-of-apps.git'
-    targetRevision: main
-    ref: values
+  sources:
+    - repoURL: 'https://prometheus-community.github.io/helm-charts'
+      chart: prometheus
+      targetRevision: 15.7.1
+      helm:
+        valueFiles:
+        - $values/values/nginx.yaml
+    - repoURL: 'https://github.com/mike-munro/argo-apps-of-apps.git'
+      targetRevision: main
+      ref: values
 
   destination:
     namespace: monitoring  # Target namespace where the application will be deployed
