@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpipam
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phpipam
+  template:
+    metadata:
+      labels:
+        app: phpipam
+    spec:
+      containers:
+      - name: phpipam
+        image: phpipam/phpipam:latest
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: phpipam-config
+        volumeMounts:
+        - name: phpipam-storage
+          mountPath: /phpipam
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+      volumes:
+      - name: phpipam-storage
+        persistentVolumeClaim:
+          claimName: phpipam-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpipam
+spec:
+  selector:
+    app: phpipam
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: phpipam-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: phpipam-config
+data:
+  DB_HOST: "your-db-host"
+  DB_NAME: "phpipam"
+  DB_USER: "phpipam"
+  DB_PASS: "your-db-password

@@ -1,45 +1,45 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: debian-deployment
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: debian-app
-  template:
-    metadata:
-      labels:
-        app: debian-app
-    spec:
-      initContainers:
-      - name: init-cert-container
-        image: debian:bullseye
-        command: ["/bin/sh", "-c"]
-        args: ["apt-get update && apt-get install -y ca-certificates && cp /etc/certs/root-certificate.crt /usr/local/share/ca-certificates/; update-ca-certificates"]
-        volumeMounts:
-        - name: certs
-          mountPath: /etc/certs/root-certificate.crt
-          subPath: root-certificate.crt
-      containers:
-      - name: debian-container
-        image: debian:bullseye
-        command: ["sleep"]
-        args: ["infinity"]
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: certs
-          mountPath: /etc/certs/root-certificate.crt
-          subPath: root-certificate.crt
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-      volumes:
-      - name: certs
-        configMap:
-          name: root-cert-config
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: debian-deployment
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: debian-app
+#   template:
+#     metadata:
+#       labels:
+#         app: debian-app
+#     spec:
+#       initContainers:
+#       - name: init-cert-container
+#         image: debian:bullseye
+#         command: ["/bin/sh", "-c"]
+#         args: ["apt-get update && apt-get install -y ca-certificates && cp /etc/certs/root-certificate.crt /usr/local/share/ca-certificates/; update-ca-certificates"]
+#         volumeMounts:
+#         - name: certs
+#           mountPath: /etc/certs/root-certificate.crt
+#           subPath: root-certificate.crt
+#       containers:
+#       - name: debian-container
+#         image: debian:bullseye
+#         command: ["sleep"]
+#         args: ["infinity"]
+#         ports:
+#         - containerPort: 80
+#         volumeMounts:
+#         - name: certs
+#           mountPath: /etc/certs/root-certificate.crt
+#           subPath: root-certificate.crt
+#         resources:
+#           limits:
+#             memory: "512Mi"
+#             cpu: "500m"
+#           requests:
+#             memory: "256Mi"
+#             cpu: "250m"
+#       volumes:
+#       - name: certs
+#         configMap:
+#           name: root-cert-config
