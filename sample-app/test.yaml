@@ -13,31 +13,35 @@ spec:
         app: debian-app
     spec:
       initContainers:
-      - name: init-cert-container
-        image: debian:bullseye
-        command: ["/bin/sh", "-c"]
-        args: ["apt-get update && apt-get install -y ca-certificates && mkdir -p /usr/local/share/ca-certificates/ && cp /etc/certs/root-certificate.crt /usr/local/share/ca-certificates/; update-ca-certificates"]
-        volumeMounts:
-        - name: certs
-          mountPath: /etc/certs
+        - name: init-cert-container
+          image: debian:bullseye
+          command: ["/bin/sh", "-c"]
+          args:
+            [
+              "apt-get update && apt-get install -y ca-certificates && mkdir -p /usr/local/share/ca-certificates/ && cp /etc/certs/root-certificate.crt /usr/local/share/ca-certificates/; update-ca-certificates",
+            ]
+          volumeMounts:
+            - name: certs
+              mountPath: /etc/certs
       containers:
-      - name: debian-container
-        image: debian:bullseye
-        command: ["sleep"]
-        args: ["infinity"]
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: certs
-          mountPath: /etc/certs
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
+        - name: debian-container
+          image: debian:bullseye
+          command: ["sleep"]
+          args: ["infinity"]
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: certs
+              mountPath: /etc/certs/root-ca.pem
+              sub-path: /etc/certs/root-ca.pem
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
       volumes:
-      - name: certs
-        configMap:
-          name: root-cert-config
+        - name: certs
+          configMap:
+            name: root-cert-config
