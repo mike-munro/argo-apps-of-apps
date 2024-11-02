@@ -13,7 +13,14 @@ spec:
         app: debian-app
     spec:
       containers:
-        - name: debian-container
-          image: debian:bullseye
-          ports:
-            - containerPort: 80
+      - name: debian-container
+        image: debian:bullseye
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
