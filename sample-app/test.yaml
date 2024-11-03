@@ -80,11 +80,11 @@ spec:
         args: ["apt-get update && apt-get install -y ca-certificates && cp /etc/certs/*.crt /usr/local/share/ca-certificates/; update-ca-certificates"]
         volumeMounts:
         - name: cert1
-          mountPath: /etc/certs/cert1
-          subPath: cert1
+          mountPath: /etc/certs/cert1.crt
+          subPath: /etc/certs/cert1.crt
         - name: cert2
-          mountPath: /etc/certs/cert2
-          subPath: cert2
+          mountPath: /etc/certs/cert2.crt
+          subPath: /etc/certs/cert2.crt
       containers:
       - name: debian-container
         image: debian:bullseye
@@ -92,13 +92,6 @@ spec:
         args: ["infinity"]
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: cert1
-          mountPath: /etc/certs/cert1
-          subPath: cert1.crt
-        - name: cert2
-          mountPath: /etc/certs/cert2
-          subPath: cert2.crt
         resources:
           limits:
             memory: "512Mi"
