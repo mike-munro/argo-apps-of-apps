@@ -77,7 +77,7 @@ spec:
       - name: init-cert-container
         image: debian:bullseye
         command: ["/bin/sh", "-c"]
-        args: ["apt-get update && apt-get install -y ca-certificates && cp /etc/certs/cert1 /usr/local/share/ca-certificates/ && cp /etc/certs/cert2 /usr/local/share/ca-certificates/; update-ca-certificates"]
+        args: ["apt-get update && apt-get install -y ca-certificates && cp /etc/certs/*.crt /usr/local/share/ca-certificates/; update-ca-certificates"]
         volumeMounts:
         - name: cert1
           mountPath: /etc/certs/cert1
@@ -95,10 +95,10 @@ spec:
         volumeMounts:
         - name: cert1
           mountPath: /etc/certs/cert1
-          subPath: cert1
+          subPath: cert1.crt
         - name: cert2
           mountPath: /etc/certs/cert2
-          subPath: cert2
+          subPath: cert2.crt
         resources:
           limits:
             memory: "512Mi"
@@ -112,10 +112,10 @@ spec:
           name: root-cert-config
           items:
             - key: cert1
-              path: cert1
+              path: cert1.crt
       - name: cert2
         configMap:
           name: root-cert-config
           items:
             - key: cert2
-              path: cert2
+              path: cert2.crt
