@@ -105,10 +105,10 @@ spec:
           name: root-cert-config
           items:
             - key: cert1
-              path: cert1.crt
+              path: cert1
       - name: cert2
         configMap:
           name: root-cert-config
           items:
             - key: cert2
-              path: cert2.crt
+              path: cert2
